@@ -1,8 +1,10 @@
 {
-	"env": {
-		"jest": true
-	},
-	"extends": "airbnb-base",
+	"parserOptions": {
+        "ecmaVersion": 2021
+    },
+    "env": {
+        "es6": true
+    },
 	"rules": {
 		"comma-dangle": 0,
 		"no-underscore-dangle": 0,
@@ -11,6 +13,10 @@
 		"camelcase": 0,
 		"indent":"off",
 		"no-tabs":"off",
-		"import/newline-after-import":"off"
+		"import/newline-after-import":"off",
+		"no-unused-vars":"warn",
+		"semi":"off",
+		"operator-linebreak":"off",
+		"object-curly-newline":"off"
 	}
 }
