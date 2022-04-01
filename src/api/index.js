@@ -19,11 +19,27 @@ const calendar = google.calendar({ version: 'v3', auth: OAuth2Client });
 
 // get calendar
 router.get('/gcal', (req, res) => {
+
+	const start_date = new Date('04/01/2022, 12:00:00');
+	const end_date = new Date('04/01/2022, 13:00:00');
+
+	var evt = {
+		summary: 'Google I/O 2015',
+		location: '800 Howard St., San Francisco, CA 94103',
+		description: "A chance to hear more about Google's developer products.",
+		start: {
+			dateTime: start_date,
+		},
+		end: {
+			dateTime: end_date,
+		},
+	};
+
 	calendar.freebusy.query(
 		{
 			resource: {
-				timeMax: new Date('01/02/2022, 12:30:42'),
-				timeMin: new Date('01/02/2022, 09:30:42'),
+				timeMin: start_date,
+				timeMax: end_date,
 				items: [
 					{
 						id: 'primary',
@@ -32,9 +48,33 @@ router.get('/gcal', (req, res) => {
 			},
 		},
 		(err, resp) => {
-			if (err) return console.error(err);
-			res.json(resp);
-			// const eventArr = res.data.calendar.primary.busy;
+			if (err) return res.status(500).json({ error: err });
+
+			const eventArr = resp.data.calendars.primary.busy;
+
+			// Check if event array is empty which means we are not busy
+			if (eventArr.length === 0) {
+				// If we are not busy create a new calendar event.
+				calendar.events.insert(
+					{ calendarId: 'primary', resource: evt },
+					(err) => {
+						// Check for errors and log them if they exist.
+						if (err) {
+							return res
+								.status(500)
+								.json({ error: 'Error Creating Calender Event:' + err });
+						}
+
+						// Else log that the event was created.
+						return res
+							.status(201)
+							.json({ data: 'Calendar event successfully created.' });
+					}
+				);
+			} else {
+				// If event array is not empty log that we are busy.
+				return res.status(401).json({ error: `Sorry I'm busy...` });
+			}
 		}
 	);
 });
