@@ -53,8 +53,10 @@ router.get('/events', async (req, res) => {
 			gcal_promises.push(insertEvent(evt));
 		}
 
-		console.log(i);
-		await delay(1000);
+		//! Note: Remove the if statement when inserting lots of new events; fine for updating
+		if (i % 10 === 0) {
+			await delay(1000);
+		}
 	}
 
 	Promise.all(gcal_promises)

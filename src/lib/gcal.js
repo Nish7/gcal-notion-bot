@@ -28,7 +28,6 @@ module.exports = {
 					})
 				);
 
-				// console.log(items)
 				resolve(items);
 			});
 		});
