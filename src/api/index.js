@@ -7,7 +7,7 @@ const { getDateTime } = require('../lib/time');
 
 const delay = (time) => new Promise((res) => setTimeout(res, time));
 
-router.get('/events', async (req, res) => {
+router.get('/refresh', async (req, res) => {
 	const events = await getEvents();
 	const exis_events = await getGoogleEvents();
 
