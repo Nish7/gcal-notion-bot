@@ -1,4 +1,3 @@
-const format = require('date-fns/format');
 const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
 
@@ -35,21 +34,7 @@ module.exports = {
 		});
 	},
 
-	insertEvent: (evt, allDay) => {
-		if (allDay) {
-			evt = {
-				...evt,
-				start: {
-					date: format(evt.start.dateTime, 'yyyy-MM-dd'),
-					timeZone: 'Canada/Eastern',
-				},
-				end: {
-					date: format(evt.end.dateTime, 'yyyy-MM-dd'),
-					timeZone: 'Canada/Eastern',
-				},
-			};
-		}
-
+	insertEvent: (evt) => {
 		return new Promise((resolve, reject) => {
 			calendar.events.insert(
 				{
@@ -64,21 +49,7 @@ module.exports = {
 		});
 	},
 
-	updateEvent: (evt, allDay, id) => {
-		if (allDay) {
-			evt = {
-				...evt,
-				start: {
-					date: format(evt.start.dateTime, 'yyyy-MM-dd'),
-					timeZone: 'Canada/Eastern',
-				},
-				end: {
-					date: format(evt.end.dateTime, 'yyyy-MM-dd'),
-					timeZone: 'Canada/Eastern',
-				},
-			};
-		}
-
+	updateEvent: (evt, id) => {
 		return new Promise((resolve, reject) => {
 			calendar.events.update(
 				{
