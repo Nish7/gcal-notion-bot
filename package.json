@@ -4,8 +4,8 @@
   "description": "Google Calendar and Notion Server",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js",
     "lint": "eslint --fix src",
     "test": "mocha --exit"
   },

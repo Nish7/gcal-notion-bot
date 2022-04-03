@@ -5,8 +5,8 @@ const cors = require('cors');
 
 require('dotenv').config();
 
-const middlewares = require('./middlewares');
-const api = require('./api');
+const middlewares = require('../lib/middlewares');
+const api = require('./refresh');
 
 const app = express();
 
@@ -14,6 +14,13 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+// Test Endpoint
+app.get('/', (req, res) => {
+	return res.status(200).json({
+		data: 'Hello, World!',
+	});
+});
 
 app.use('/api/v1', api);
 
