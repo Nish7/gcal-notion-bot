@@ -5,7 +5,7 @@ const cors = require('cors');
 
 require('dotenv').config();
 
-const middlewares = require('../lib/middlewares');
+const middlewares = require('./middlewares');
 const api = require('./refresh');
 
 const app = express();
