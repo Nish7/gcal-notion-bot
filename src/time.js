@@ -1,6 +1,7 @@
 const format = require('date-fns/format');
 const { zonedTimeToUtc } = require('date-fns-tz');
 const addHours = require('date-fns/addHours');
+const addDays = require('date-fns/addDays');
 
 module.exports = {
 	getDateTime: (start_dateTime, end_dateTime) => {
@@ -54,7 +55,7 @@ module.exports = {
 					},
 					end_datetime: {
 						date: format(
-							zonedTimeToUtc(end_dateTime, 'Canada/Eastern'),
+							addDays(zonedTimeToUtc(end_dateTime, 'Canada/Eastern'), 1),
 							'yyyy-MM-dd'
 						),
 					},

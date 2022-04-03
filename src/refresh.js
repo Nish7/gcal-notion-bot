@@ -27,6 +27,8 @@ const refresh = async () => {
 		const summary = `${course}: ${title}`;
 		const { start_datetime, end_datetime } = getDateTime(start_date, end_date);
 
+		console.log(summary, start_datetime, end_datetime);
+
 		const evt = {
 			summary,
 			description: `Course: ${course} \nTask: ${task} \nWeight: ${weight} \nScores: ${scored} \nWeightage: ${weightage} \nStatus: ${status} \nNotes: ${notes}`,
