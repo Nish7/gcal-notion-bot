@@ -11,7 +11,7 @@ const refresh = async () => {
 	const gcal_promises = [];
 
 	for (let i = 0; i < events.length; i++) {
-		const {
+		let {
 			title,
 			course,
 			start_date,
@@ -25,13 +25,18 @@ const refresh = async () => {
 		} = events[i];
 
 		const summary = `${course}: ${title}`;
+		weight = weight + '/' + weightage * 100;
+		scored = scored * 100 + '%';
+		weightage = weightage * 100 + '%';
+		status = status ? 'Done' : 'Left';
+		notes = notes ?? '';
 		const { start_datetime, end_datetime } = getDateTime(start_date, end_date);
 
 		console.log(summary, start_datetime, end_datetime);
 
 		const evt = {
 			summary,
-			description: `Course: ${course} \nTask: ${task} \nWeight: ${weight} \nScores: ${scored} \nWeightage: ${weightage} \nStatus: ${status} \nNotes: ${notes}`,
+			description: `Course: ${course} \nStatus: ${status} \nTask: ${task} \nWeightage: ${weightage}  \Scored: ${weight} \nPercentage: ${scored} \nNotes: ${notes}`,
 			start: {
 				...start_datetime,
 				timeZone: 'Canada/Eastern',
