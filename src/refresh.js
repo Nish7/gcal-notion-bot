@@ -1,13 +1,10 @@
-const express = require('express');
-const router = express.Router();
-
-const { getEvents } = require('../lib/notion');
-const { getGoogleEvents, insertEvent, updateEvent } = require('../lib/gcal');
-const { getDateTime } = require('../lib/time');
+const { getEvents } = require('./notion');
+const { getGoogleEvents, insertEvent, updateEvent } = require('./gcal');
+const { getDateTime } = require('./time');
 
 const delay = (time) => new Promise((res) => setTimeout(res, time));
 
-router.get('/refresh', async (req, res) => {
+const refresh = async () => {
 	const events = await getEvents();
 	const exis_events = await getGoogleEvents();
 
@@ -61,13 +58,11 @@ router.get('/refresh', async (req, res) => {
 
 	Promise.all(gcal_promises)
 		.then(() => {
-			return res
-				.status(201)
-				.json({ data: 'All Calendar events successfully created.' });
+			console.log('All Calendar events successfully created.');
 		})
 		.catch((err) => {
-			return res.status(400).json({ error: err });
+			console.errpr('GCAL ERROR: ', err);
 		});
-});
+};
 
-module.exports = router;
+module.exports = refresh;
