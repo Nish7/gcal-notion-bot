@@ -14,10 +14,10 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
+      - run: npm start
         env:
           NOTION_KEY: ${{secrets.NOTION_KEY}}
           DATABASE_ID: ${{secrets.DATABASE_ID}}
           OAUTH_CLIENTID: ${{secrets.OAUTH_CLIENTID}}
           OAUTH_SECRET: ${{secrets.OAUTH_SECRET}}
           REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
-      - run: npm start
