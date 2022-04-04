@@ -5,12 +5,6 @@ on:
       - node-bot
   schedule:
     - cron: '0 */4 * * *'
-env:
-  NOTION_KEY:${{secrets.NOTION_KEY}}
-  DATABASE_ID:${{secrets.DATABASE_ID}}
-  OAUTH_CLIENTID:${{secrets.OAUTH_CLIENTID}}
-  OAUTH_SECRET:${{secrets.OAUTH_SECRET}}
-  REFRESH_TOKEN:${{secrets.REFRESH_TOKEN}}
 jobs:
   refresh:
     runs-on: ubuntu-latest
@@ -19,5 +13,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+        env:
+          NOTION_KEY: ${{secrets.NOTION_KEY}}
+          DATABASE_ID: ${{secrets.DATABASE_ID}}
+          OAUTH_CLIENTID: ${{secrets.OAUTH_CLIENTID}}
+          OAUTH_SECRET: ${{secrets.OAUTH_SECRET}}
+          REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
       - run: npm install
       - run: npm start
