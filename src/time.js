@@ -37,10 +37,10 @@ module.exports = {
 			if (isTime) {
 				return {
 					start_datetime: {
-						dateTime: zonedTimeToUtc(start_dateTime, 'Canada/Eastern'),
+						dateTime: new Date(start_dateTime),
 					},
 					end_datetime: {
-						dateTime: zonedTimeToUtc(end_dateTime, 'Canada/Eastern'),
+						dateTime: new Date(end_dateTime),
 					},
 				};
 			} else {
