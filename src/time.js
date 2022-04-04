@@ -7,17 +7,15 @@ module.exports = {
 	getDateTime: (start_dateTime, end_dateTime) => {
 		// assumed that end_datetime has a timeaswell: behavior from notion
 		const isTime = start_dateTime.split('T').length > 1;
+		console.log(start_dateTime, end_dateTime);
 
 		if (isTime && !end_dateTime) {
 			return {
 				start_datetime: {
-					dateTime: zonedTimeToUtc(start_dateTime, 'Canada/Eastern'),
+					dateTime: new Date(start_dateTime),
 				},
 				end_datetime: {
-					dateTime: addHours(
-						zonedTimeToUtc(start_dateTime, 'Canada/Eastern'),
-						1
-					),
+					dateTime: addHours(new Date(start_dateTime), 1),
 				},
 			};
 		} else if (!isTime && !end_dateTime) {

@@ -68,7 +68,7 @@ const refresh = async () => {
 			console.log('All Calendar events successfully created.');
 		})
 		.catch((err) => {
-			console.errpr('GCAL ERROR: ', err);
+			console.error('GCAL ERROR: ', err);
 		});
 };
 
