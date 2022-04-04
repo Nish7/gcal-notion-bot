@@ -9,15 +9,15 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install
       env:
           NOTION_KEY: ${{secrets.NOTION_KEY}}
           DATABASE_ID: ${{secrets.DATABASE_ID}}
           OAUTH_CLIENTID: ${{secrets.OAUTH_CLIENTID}}
           OAUTH_SECRET: ${{secrets.OAUTH_SECRET}}
           REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install
       - run: npm start
