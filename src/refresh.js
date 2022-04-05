@@ -30,19 +30,19 @@ const refresh = async () => {
 		weightage = weightage * 100 + '%';
 		status = status ? 'Done' : 'Left';
 		notes = notes ?? '';
-		const { start_datetime, end_datetime } = getDateTime(start_date, end_date);
+		const { start_dateTime, end_dateTime } = getDateTime(start_date, end_date);
 
-		console.log(summary, start_datetime, end_datetime);
+		console.log(summary, start_dateTime, end_dateTime);
 
 		const evt = {
 			summary,
-			description: `Course: ${course} \nStatus: ${status} \nTask: ${task} \nWeightage: ${weightage}  \Scored: ${weight} \nPercentage: ${scored} \nNotes: ${notes}`,
+			description: `Course: ${course} \nStatus: ${status} \nTask: ${task} \nWeightage: ${weightage} \nScored: ${weight} \nPercentage: ${scored} \nNotes: ${notes}`,
 			start: {
-				...start_datetime,
+				...start_dateTime,
 				timeZone: 'Canada/Eastern',
 			},
 			end: {
-				...end_datetime,
+				...end_dateTime,
 				timeZone: 'Canada/Eastern',
 			},
 		};
