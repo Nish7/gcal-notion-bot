@@ -13,8 +13,8 @@ module.exports = {
 
 		if (isTime && !end_dateTime) {
 			// 2022-01-20T00:00:00 - null
-			tm['start_dateTime']['dateTime'] = new Date(start_dateTime);
-			tm['end_dateTime']['dateTime'] = addHours(new Date(start_dateTime), 1);
+			tm['start_dateTime']['dateTime'] = new Date(start_dateTime.replace('+05:30','-04:00'));
+			tm['end_dateTime']['dateTime'] = addHours(new Date(start_dateTime.replace('+05:30','-04:00')), 1);
 		} else if (!isTime && !end_dateTime) {
 			// 2022-01-20 - null
 			tm['start_dateTime']['date'] = format(
