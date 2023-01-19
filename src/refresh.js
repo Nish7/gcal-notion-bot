@@ -58,9 +58,7 @@ const refresh = async () => {
 		}
 
 		//! Note: Remove the if statement when inserting lots of new events; fine for updating
-		if (i % 10 === 0) {
-			await delay(1000);
-		}
+		await delay(1000);
 	}
 
 	Promise.all(gcal_promises)
