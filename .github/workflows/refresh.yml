@@ -22,3 +22,4 @@ jobs:
           OAUTH_CLIENTID: ${{secrets.OAUTH_CLIENTID}}
           OAUTH_SECRET: ${{secrets.OAUTH_SECRET}}
           REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
+          CALENDAR_ID: ${{secrets.CALENDAR_ID}}
