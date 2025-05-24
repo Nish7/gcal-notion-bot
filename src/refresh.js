@@ -1,73 +1,114 @@
-const { getEvents } = require('./notion');
-const { getGoogleEvents, insertEvent, updateEvent } = require('./gcal');
-const { getDateTime } = require('./time');
+import { getEvents } from './notion.js';
+import { getGoogleEvents, insertEvent, updateEvent } from './gcal.js';
+import { getDateTime } from './time.js';
 
-const delay = (time) => new Promise((res) => setTimeout(res, time));
-
-const refresh = async () => {
-	const events = await getEvents();
-	const exis_events = await getGoogleEvents();
-
-	const gcal_promises = [];
-
-	for (let i = 0; i < events.length; i++) {
-		let {
-			title,
-			course,
-			start_date,
-			end_date,
-			task,
-			notes,
-			weight,
-			scored,
-			weightage,
-			status,
-		} = events[i];
-
-		const summary = `${course}: ${title}`;
-		weight = weight + '/' + weightage * 100;
-		scored = scored * 100 + '%';
-		weightage = weightage * 100 + '%';
-		status = status ? 'Done' : 'Left';
-		notes = notes ?? '';
-		const { start_dateTime, end_dateTime } = getDateTime(start_date, end_date);
-
-		console.log(summary, start_dateTime, end_dateTime);
-
-		const evt = {
-			summary,
-			description: `Course: ${course} \nStatus: ${status} \nTask: ${task} \nWeightage: ${weightage} \nScored: ${weight} \nPercentage: ${scored} \nNotes: ${notes}`,
-			start: {
-				...start_dateTime,
-				timeZone: 'Canada/Eastern',
-			},
-			end: {
-				...end_dateTime,
-				timeZone: 'Canada/Eastern',
-			},
-		};
-
-		const found_events = exis_events.filter(
-			({ summary }) => summary == evt.summary
-		);
-
-		if (found_events.length > 0) {
-			gcal_promises.push(updateEvent(evt, found_events[0].id));
-		} else {
-			gcal_promises.push(insertEvent(evt));
-		}
-
-		//! Note: Remove the if statement when inserting lots of new events; fine for updating
-		await delay(1000);
-	}
-
-	Promise.all(gcal_promises)
-		.then(() => {
-			console.log('All Calendar events successfully created.');
-		})
-		.catch((err) => {
-			console.error('GCAL ERROR: ', err);
-		});
+// Configuration constants
+const CONFIG = {
+    TIMEZONE: 'Canada/Eastern',
+    DELAY_MS: 1000,
+    PERCENTAGE_MULTIPLIER: 100
 };
 
-module.exports = refresh;
+/**
+ * Formats event data for Google Calendar
+ * @param {Object} eventData - Raw event data from Notion
+ * @returns {Object} Formatted event data for Google Calendar
+ */
+const formatEventData = ({
+    title,
+    course,
+    start_date,
+    end_date,
+    task,
+    notes = '',
+    weight,
+    scored,
+    weightage,
+    status
+}) => {
+    const summary = `${course}: ${title}`;
+    const formattedWeight = `${weight}/${weightage * CONFIG.PERCENTAGE_MULTIPLIER}`;
+    const formattedScore = `${scored * CONFIG.PERCENTAGE_MULTIPLIER}%`;
+    const formattedWeightage = `${weightage * CONFIG.PERCENTAGE_MULTIPLIER}%`;
+    const formattedStatus = status ? 'Done' : 'Left';
+    const { start_dateTime, end_dateTime } = getDateTime(start_date, end_date);
+
+    return {
+        summary,
+        description: [
+            `Course: ${course}`,
+            `Status: ${formattedStatus}`,
+            `Task: ${task}`,
+            `Weightage: ${formattedWeightage}`,
+            `Scored: ${formattedWeight}`,
+            `Percentage: ${formattedScore}`,
+            `Notes: ${notes}`
+        ].join('\n'),
+        start: {
+            ...start_dateTime,
+            timeZone: CONFIG.TIMEZONE
+        },
+        end: {
+            ...end_dateTime,
+            timeZone: CONFIG.TIMEZONE
+        }
+    };
+};
+
+/**
+ * Processes a single event, either updating an existing one or creating a new one
+ * @param {Object} event - Event data to process
+ * @param {Array} existingEvents - List of existing Google Calendar events
+ * @returns {Promise} Promise resolving to the event operation
+ */
+const processEvent = async (event, existingEvents) => {
+    const formattedEvent = formatEventData(event);
+    const foundEvent = existingEvents.find(
+        ({ summary }) => summary === formattedEvent.summary
+    );
+
+    console.log(`Processing event: ${formattedEvent.summary}: ${formattedEvent.start.date}-${formattedEvent.end.date}`);
+    
+    try {
+        if (foundEvent) {
+            return await updateEvent(formattedEvent, foundEvent.id);
+        }
+        return await insertEvent(formattedEvent);
+    } catch (error) {
+        console.error(`Failed to process event ${formattedEvent.summary}:`, error);
+        throw error;
+    }
+};
+
+/**
+ * Refreshes calendar events by syncing Notion events with Google Calendar
+ * @returns {Promise<void>}
+ */
+const refresh = async () => {
+    try {
+        const [events, existingEvents] = await Promise.all([
+            getEvents(),
+            getGoogleEvents()
+        ]);
+
+        if (!events?.length) {
+            console.log('No events found in Notion');
+            return;
+        }
+
+        for (const event of events) {
+            await processEvent(event, existingEvents);
+            await delay(CONFIG.DELAY_MS);
+        }
+
+        console.log('All Calendar events successfully processed.');
+    } catch (error) {
+        console.error('Failed to refresh calendar events:', error);
+        throw error;
+    }
+};
+
+// Utility function for adding delays between operations
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export default refresh;
