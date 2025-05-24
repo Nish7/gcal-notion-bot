@@ -3,7 +3,7 @@ const { OAuth2 } = google.auth;
 
 // Configuration constants
 const CONFIG = {
-    CALENDAR_ID: 'primary',
+    CALENDAR_ID: process.env.CALENDAR_ID,
     API_VERSION: 'v3'
 };
 
@@ -82,3 +82,21 @@ export const updateEvent = async (evt, id) => {
         throw new Error(`Failed to update event: ${error.message}`);
     }
 };
+
+/**
+ * Deletes an event from Google Calendar
+ * @param {string} id - The ID of the event to delete
+ * @returns {Promise<void>} A promise that resolves when the event is deleted
+ * @throws {Error} If the API call fails
+ */
+export const deleteEvent = async (id) => {
+    try {
+        await calendar.events.delete({
+            calendarId: CONFIG.CALENDAR_ID,
+            eventId: id
+        });
+    } catch (error) {
+        console.error(`Failed to delete calendar event ${id}:`, error);
+        throw new Error(`Failed to delete event: ${error.message}`);
+    }
+}
