@@ -1,6 +1,6 @@
-const { getEvents } = require('./notion');
-const { getGoogleEvents, insertEvent, updateEvent } = require('./gcal');
-const { getDateTime } = require('./time');
+import { getEvents } from './notion.js';
+import { getGoogleEvents, insertEvent, updateEvent } from './gcal.js';
+import { getDateTime } from './time.js';
 
 const delay = (time) => new Promise((res) => setTimeout(res, time));
 
@@ -70,4 +70,4 @@ const refresh = async () => {
 		});
 };
 
-module.exports = refresh;
+export default refresh;
