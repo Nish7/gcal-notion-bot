@@ -15,7 +15,7 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
-      - run: bun run bun:start
+      - run: bun start
         env:
           NOTION_KEY: ${{secrets.NOTION_KEY}}
           DATABASE_ID: ${{secrets.DATABASE_ID}}
