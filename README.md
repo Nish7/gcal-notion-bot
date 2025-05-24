@@ -1,5 +1,5 @@
 # Google Calendar - Notion Integration
-[![refresh-events](https://github.com/Nish7/gcal-notion-bot/actions/workflows/refresh.yml/badge.svg)](https://github.com/Nish7/gcal-notion-bot/actions/workflows/refresh.yml)
+[![refresh-events](https://github.com/Nish7/gcal-notion-bot/actions/workflows/refresh.yml/badge.svg?branch=node-bot)](https://github.com/Nish7/gcal-notion-bot/actions/workflows/refresh.yml)
 
 Automatically syncs events from a Notion database to Google Calendar, including details like course, title, status, task, weightage, scores, and notes.
 
