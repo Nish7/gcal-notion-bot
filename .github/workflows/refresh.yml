@@ -1,5 +1,6 @@
 name: refresh-events
 on:
+  workflow_dispatch:
   push:
     branches:
       - node-bot
