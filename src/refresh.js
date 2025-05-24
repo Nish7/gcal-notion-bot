@@ -64,16 +64,17 @@ const formatEventData = ({
 const processEvent = async (event, existingEvents) => {
     const formattedEvent = formatEventData(event);
     const foundEvent = existingEvents.find(
-        ({ summary }) => summary === formattedEvent.summary
+        ({ summary }) => summary == formattedEvent.summary
     );
 
-    console.log(`Processing event: ${formattedEvent.summary}: ${formattedEvent.start.date}-${formattedEvent.end.date}`);
+    console.log(`Processing event: ${formattedEvent.summary}`);
     
     try {
-        if (foundEvent) {
-            return await updateEvent(formattedEvent, foundEvent.id);
-        }
-        return await insertEvent(formattedEvent);
+      if (foundEvent) {
+          console.log(`Updating event: ${formattedEvent.summary}`);
+          return await updateEvent(formattedEvent, foundEvent.id);
+      }
+      return await insertEvent(formattedEvent);
     } catch (error) {
         console.error(`Failed to process event ${formattedEvent.summary}:`, error);
         throw error;
