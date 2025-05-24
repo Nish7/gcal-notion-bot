@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@notionhq/client": "^1.0.4",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.0.0",
     "googleapis": "^100.0.0"
   },

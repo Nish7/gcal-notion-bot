@@ -36,6 +36,5 @@ export const getDateTime = (start_dateTime, end_dateTime) => {
 		);
 	}
 
-	console.log(tm);
 	return tm;
 };
