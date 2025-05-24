@@ -58,15 +58,31 @@ Automatically syncs events from a Notion database to Google Calendar, including 
 
 ## Running the Project
 
+### With Bun
+
+Bun has built-in support for loading environment variables from your `.env` file, so you do not need to use `dotenv` when running with Bun.
+
 ```bash
 # Install dependencies
 bun install
 
 # Start the sync process
-bun start
+bun run start
 
 # Development mode with hot reload
-bun dev
+bun run dev
+```
+
+After running `bun install`, Bun will generate a `bun.lockb` file for reproducible installs. You should commit this file to version control.
+
+### With Node
+
+```bash
+# Install dependencies
+npm install
+
+# Start the sync process
+npm start
 ```
 
 ## Required Notion Database Structure
